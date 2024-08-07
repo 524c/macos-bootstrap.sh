@@ -261,6 +261,7 @@ imap <C-a> <Home>
 " autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 " set formatoptions-=c formatoptions-=r formatoptions-=o
 EOF
+sudo cp ~/.vimrc /var/root/
 }
 
 function install_fonts() {
@@ -2166,7 +2167,7 @@ export PATH=/usr/local/bin:/usr/local/sbin:/opt/homebrew/opt/curl/bin:/bin:/sbin
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 }
 
-#update_sudoers
+update_sudoers
 install_apps
 install_fonts
 setup_zsh
