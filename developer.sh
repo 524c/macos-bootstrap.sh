@@ -1939,7 +1939,6 @@ typeset -g POWERLEVEL9K_CONFIG_FILE=${${(%):-%x}:a}
 EOF
 }
 
-echo "installing homebrew..."
 export PATH=/usr/local/bin:/usr/local/sbin:/opt/homebrew/opt/curl/bin:/bin:/sbin:/usr/bin/:/usr/local/bin/:/usr/local/sbin:/opt/homebrew/bin
 
 [[ $(uname) == "Darwin" ]] || {
@@ -1947,9 +1946,10 @@ export PATH=/usr/local/bin:/usr/local/sbin:/opt/homebrew/opt/curl/bin:/bin:/sbin
   exit 1
 }
 
-if [[ ! -x /opt/homebrew/bin/brew ]]; then
+[[ ! -x /opt/homebrew/bin/brew ]] && {
+  echo "installing homebrew..."
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-fi
+}
 
 #update_sudoers
 install_apps
@@ -1957,5 +1957,11 @@ install_fonts
 setup_zsh
 setup_p10k
 
-sudo chsh -s /usr/local/bin/zsh $USER
+# sudo chsh -s /usr/local/bin/zsh $USER
+# test if zsh is the default shell
+[[ $(dscl . -read /Users/$USER UserShell | awk '{print $2}') == "/opt/homebrew/bin/zsh" ]] || {
+  echo "Setting zsh as the default shell"
+  sudo dscl . -create /Users/$USER UserShell /opt/homebrew/bin/zsh
+}
+
 echo -e "\nPress CMD+Q to quit Terminal and then open it again to see the changes.\n"
